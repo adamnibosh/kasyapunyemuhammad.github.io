@@ -29,6 +29,12 @@ const MESSAGES = [
 ];
 
 // ╔══════════════════════════════════════════════╗
+// ║  MEMORY CAPTIONS — edit these to match yours ║
+// ╚══════════════════════════════════════════════╝
+// (captions are already in the HTML, this is just a reminder
+//  to also edit index.html mem-caption paragraphs)
+
+// ╔══════════════════════════════════════════════╗
 // ║  PASSCODE                                    ║
 // ╚══════════════════════════════════════════════╝
 const PASSCODE = '1406';
@@ -49,10 +55,6 @@ function markVisited(name) {
 }
 
 function goTo(name) {
-  // stop rain if leaving finale
-  if (document.getElementById('screen-finale')?.classList.contains('active') && name !== 'finale') {
-    stopHeartRain();
-  }
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const t = document.getElementById('screen-' + name);
   if (t) t.classList.add('active');
@@ -184,6 +186,7 @@ const GAL_TOTAL = 6;
 function initGallery() {
   galIndex = 0;
   renderGallery();
+  // build dots once
   const dotContainer = document.getElementById('galDots');
   if (dotContainer && dotContainer.children.length === 0) {
     for (let i = 0; i < GAL_TOTAL; i++) {
@@ -260,7 +263,7 @@ function renderMessage(animate = true) {
 
   if (animate) {
     card.classList.remove('flip');
-    void card.offsetWidth;
+    void card.offsetWidth; // reflow to restart animation
     card.classList.add('flip');
   }
 
@@ -361,8 +364,8 @@ function spawnRainDrop() {
     vx:    (Math.random() - 0.5) * 0.6,
     size:  18 + Math.random() * 22,
     sym:   RAIN_SYMBOLS[Math.floor(Math.random() * RAIN_SYMBOLS.length)],
-    sway:  Math.random() * Math.PI * 2,
-    swayA: 0.3 + Math.random() * 0.5,
+    sway:  Math.random() * Math.PI * 2,    // sway phase offset
+    swayA: 0.3 + Math.random() * 0.5,      // sway amplitude
     alpha: 0.7 + Math.random() * 0.3,
   });
 }
@@ -372,6 +375,7 @@ function rainLoop() {
   resizeRainCanvas();
   rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
 
+  // spawn new drops steadily
   if (Math.random() < 0.35) spawnRainDrop();
 
   rainDrops.forEach(d => {
@@ -386,6 +390,7 @@ function rainLoop() {
     rainCtx.restore();
   });
 
+  // recycle drops that fall off the bottom
   rainDrops = rainDrops.filter(d => d.y < rainCanvas.height + 50);
 
   rainRAF = requestAnimationFrame(rainLoop);
@@ -396,6 +401,7 @@ function startHeartRain() {
   rainRunning = true;
   rainDrops   = [];
   resizeRainCanvas();
+  // seed an initial spread so it doesn't feel empty at first
   for (let i = 0; i < 18; i++) {
     spawnRainDrop();
     rainDrops[rainDrops.length - 1].y = Math.random() * (rainCanvas?.height ?? 600);
@@ -410,4 +416,13 @@ function stopHeartRain() {
   rainDrops = [];
 }
 
-// Rain stop is now handled inside goTo()
+// stop rain when navigating away from finale
+const _origGoTo = goTo;  // keep reference
+// patch goTo to stop rain when leaving
+const goToOrig = goTo;
+window.__goTo  = goTo;
+// override via event — when "start over" is clicked, rain stops
+document.getElementById('screen-finale')?.addEventListener('click', e => {
+  const btn = e.target.closest('[data-goto]');
+  if (btn) stopHeartRain();
+});
