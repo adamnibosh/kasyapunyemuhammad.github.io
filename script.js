@@ -40,13 +40,17 @@ const MESSAGES = [
 const PASSCODE = '1406';
 
 // ─── screen navigation ───────────────────────────
+const GIFT_SCREENS = new Set(['letter', 'memories', 'messages']);
+const visited = new Set();
+
 function goTo(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const t = document.getElementById('screen-' + name);
   if (t) t.classList.add('active');
-  if (name === 'lock') resetKeypad();
+  if (name === 'lock')    resetKeypad();
   if (name === 'memories') initGallery();
   if (name === 'messages') initMessages();
+  if (name === 'finale')   startHeartRain();
 }
 
 // wire up all data-goto buttons (except lock — handled by keypad)
@@ -54,7 +58,22 @@ document.querySelectorAll('[data-goto]').forEach(el => {
   el.addEventListener('click', e => {
     spawnRipple(el, e);
     const dest = el.dataset.goto;
-    if (dest === 'letter' || dest === 'memories' || dest === 'messages') burstConfetti();
+
+    // track gift visits
+    if (GIFT_SCREENS.has(dest)) {
+      burstConfetti();
+      visited.add(dest);
+      // mark card as visited
+      const card = document.getElementById('gcard-' + dest);
+      if (card) card.classList.add('visited');
+      // reveal finale button once all 3 seen
+      if (visited.size === 3) {
+        setTimeout(() => {
+          document.getElementById('finaleReveal')?.classList.add('show');
+        }, 600);
+      }
+    }
+
     setTimeout(() => goTo(dest), 140);
   });
 });
@@ -311,3 +330,93 @@ function loop() {
   if(confetti.length){ raf=requestAnimationFrame(loop); }
   else { ctx.clearRect(0,0,canvas.width,canvas.height); raf=null; }
 }
+
+// ─── heart rain (finale screen) ──────────────────
+const rainCanvas = document.getElementById('rainCanvas');
+const rainCtx    = rainCanvas?.getContext('2d');
+let rainDrops    = [];
+let rainRAF      = null;
+let rainRunning  = false;
+
+const RAIN_SYMBOLS = ['❤️','💛','🤍','💕','✨','🌸','💖','🌷'];
+
+function resizeRainCanvas() {
+  if (!rainCanvas) return;
+  const r = document.getElementById('screenStack').getBoundingClientRect();
+  rainCanvas.width  = r.width;
+  rainCanvas.height = r.height;
+}
+window.addEventListener('resize', resizeRainCanvas);
+resizeRainCanvas();
+
+function spawnRainDrop() {
+  if (!rainCanvas) return;
+  rainDrops.push({
+    x:     Math.random() * rainCanvas.width,
+    y:     -40,
+    vy:    1.2 + Math.random() * 1.8,
+    vx:    (Math.random() - 0.5) * 0.6,
+    size:  18 + Math.random() * 22,
+    sym:   RAIN_SYMBOLS[Math.floor(Math.random() * RAIN_SYMBOLS.length)],
+    sway:  Math.random() * Math.PI * 2,    // sway phase offset
+    swayA: 0.3 + Math.random() * 0.5,      // sway amplitude
+    alpha: 0.7 + Math.random() * 0.3,
+  });
+}
+
+function rainLoop() {
+  if (!rainCtx || !rainRunning) return;
+  resizeRainCanvas();
+  rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+
+  // spawn new drops steadily
+  if (Math.random() < 0.35) spawnRainDrop();
+
+  rainDrops.forEach(d => {
+    d.sway += 0.025;
+    d.x += d.vx + Math.sin(d.sway) * d.swayA;
+    d.y += d.vy;
+    rainCtx.save();
+    rainCtx.globalAlpha = d.alpha;
+    rainCtx.font = `${d.size}px serif`;
+    rainCtx.textAlign = 'center';
+    rainCtx.fillText(d.sym, d.x, d.y);
+    rainCtx.restore();
+  });
+
+  // recycle drops that fall off the bottom
+  rainDrops = rainDrops.filter(d => d.y < rainCanvas.height + 50);
+
+  rainRAF = requestAnimationFrame(rainLoop);
+}
+
+function startHeartRain() {
+  if (rainRunning) return;
+  rainRunning = true;
+  rainDrops   = [];
+  resizeRainCanvas();
+  // seed an initial spread so it doesn't feel empty at first
+  for (let i = 0; i < 18; i++) {
+    spawnRainDrop();
+    rainDrops[rainDrops.length - 1].y = Math.random() * (rainCanvas?.height ?? 600);
+  }
+  rainLoop();
+}
+
+function stopHeartRain() {
+  rainRunning = false;
+  if (rainRAF) { cancelAnimationFrame(rainRAF); rainRAF = null; }
+  if (rainCtx && rainCanvas) rainCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+  rainDrops = [];
+}
+
+// stop rain when navigating away from finale
+const _origGoTo = goTo;  // keep reference
+// patch goTo to stop rain when leaving
+const goToOrig = goTo;
+window.__goTo  = goTo;
+// override via event — when "start over" is clicked, rain stops
+document.getElementById('screen-finale')?.addEventListener('click', e => {
+  const btn = e.target.closest('[data-goto]');
+  if (btn) stopHeartRain();
+});

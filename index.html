@@ -85,25 +85,27 @@
       <p class="subtitle">choose wisely~</p>
       <div class="gift-grid">
 
-        <button class="gift-card gift-tall" data-goto="letter" style="--i:0">
+        <button class="gift-card gift-tall" data-goto="letter" style="--i:0" id="gcard-letter">
           <div class="gift-inner">
             <span class="gift-big-emoji">💌</span>
             <span class="gift-label">my apology</span>
             <span class="gift-sublabel">a letter from the heart</span>
           </div>
+          <span class="gift-badge">✓</span>
           <span class="gift-shine"></span>
         </button>
 
-        <button class="gift-card gift-tall" data-goto="memories" style="--i:1">
+        <button class="gift-card gift-tall" data-goto="memories" style="--i:1" id="gcard-memories">
           <div class="gift-inner">
             <span class="gift-big-emoji">📸</span>
             <span class="gift-label">our memories</span>
             <span class="gift-sublabel">moments i'll never forget</span>
           </div>
+          <span class="gift-badge">✓</span>
           <span class="gift-shine"></span>
         </button>
 
-        <button class="gift-card gift-wide" data-goto="messages" style="--i:2">
+        <button class="gift-card gift-wide" data-goto="messages" style="--i:2" id="gcard-messages">
           <div class="gift-inner gift-inner-wide">
             <span class="gift-big-emoji">💬</span>
             <div>
@@ -111,11 +113,18 @@
               <span class="gift-sublabel">things i always mean to say</span>
             </div>
           </div>
+          <span class="gift-badge">✓</span>
           <span class="gift-shine"></span>
         </button>
 
       </div>
       <div class="paws-deco">🐾 🐾</div>
+
+      <!-- appears only after all 3 gifts visited -->
+      <div class="finale-reveal" id="finaleReveal">
+        <p class="finale-hint">you've opened everything 🎀</p>
+        <button class="btn btn-finale" data-goto="finale">see the ending 💛</button>
+      </div>
     </section>
 
     <!-- ═══ SCREEN 4a: APOLOGY LETTER ═══ -->
@@ -235,6 +244,26 @@
       </div>
 
       <button class="btn btn-primary" data-goto="gift">← back to gifts</button>
+    </section>
+
+    <!-- ═══ SCREEN 5: FINALE ═══ -->
+    <section class="screen" id="screen-finale">
+      <canvas class="rain-canvas" id="rainCanvas" aria-hidden="true"></canvas>
+      <div class="finale-content">
+        <div class="finale-cat">🐱</div>
+        <p class="eyebrow">that's everything 🎀</p>
+        <h1 class="title title-script">thank you<br>for being mine.</h1>
+        <div class="finale-card">
+          <p class="finale-body">
+            no matter what happens between us,
+            i want you to know that you matter —
+            deeply, genuinely, always. 🌸
+          </p>
+          <p class="finale-stars">✨ 💛 ✨</p>
+        </div>
+        <p class="finale-sub">you've seen everything i made for you 🎁</p>
+        <button class="btn btn-ghost btn-restart" data-goto="lock">start over 🔁</button>
+      </div>
     </section>
 
   </div>
