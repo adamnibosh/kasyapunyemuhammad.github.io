@@ -147,79 +147,56 @@
       </div>
       <button class="btn btn-done" data-done="letter">i've read this ✓</button>
     </section>
-    <section class="screen" id="screen-memories">
-      <div class="floaty floaty1">📸</div>
-      <p class="eyebrow">our story</p>
-      <h1 class="title title-script">moments i treasure</h1>
+    <!-- ═══ SCREEN: MEMORIES ═══ -->
+<section class="screen" id="screen-memories">
+  <div class="floaty floaty1">📸</div>
+  <p class="eyebrow">our story</p>
+  <h1 class="title title-script">moments i treasure</h1>
 
-      <div class="gallery-wrap">
-        <div class="gallery-slider" id="gallerySlider">
+  <div class="gallery-wrap">
+    <div class="gallery-slider" id="gallerySlider">
 
-          <!-- SLIDE 1 -->
-          <div class="mem-slide">
-            <div class="mem-photo-wrap">
-              <img src="assets/mem1.jpg" alt="memory 1" class="mem-photo" onerror="this.parentNode.classList.add('placeholder')">
-              <div class="mem-placeholder-inner">🌸</div>
-            </div>
-            <p class="mem-caption">ingat tak ni first time kita ambil gamba berdua 💛</p>
-          </div>
-
-          <!-- SLIDE 2 -->
-          <div class="mem-slide">
-            <div class="mem-photo-wrap">
-              <img src="assets/mem2.jpg" alt="memory 2" class="mem-photo" onerror="this.parentNode.classList.add('placeholder')">
-              <div class="mem-placeholder-inner">🤍</div>
-            </div>
-            <p class="mem-caption">i smile every time i think of this 😊</p>
-          </div>
-
-          <!-- SLIDE 3 -->
-          <div class="mem-slide">
-            <div class="mem-photo-wrap">
-              <img src="assets/mem3.jpg" alt="memory 3" class="mem-photo" onerror="this.parentNode.classList.add('placeholder')">
-              <div class="mem-placeholder-inner">✨</div>
-            </div>
-            <p class="mem-caption">this is my favourite kind of day 🌤️</p>
-          </div>
-
-          <!-- SLIDE 4 -->
-          <div class="mem-slide">
-            <div class="mem-photo-wrap">
-              <img src="assets/mem4.jpg" alt="memory 4" class="mem-photo" onerror="this.parentNode.classList.add('placeholder')">
-              <div class="mem-placeholder-inner">💕</div>
-            </div>
-            <p class="mem-caption">i'd choose this again and again 🔁</p>
-          </div>
-
-          <!-- SLIDE 5 -->
-          <div class="mem-slide">
-            <div class="mem-photo-wrap">
-              <img src="assets/mem5.jpg" alt="memory 5" class="mem-photo" onerror="this.parentNode.classList.add('placeholder')">
-              <div class="mem-placeholder-inner">🌷</div>
-            </div>
-            <p class="mem-caption">us, always 🐾</p>
-          </div>
-
-          <!-- SLIDE 6 -->
-          <div class="mem-slide">
-            <div class="mem-photo-wrap">
-              <img src="assets/mem6.jpg" alt="memory 6" class="mem-photo" onerror="this.parentNode.classList.add('placeholder')">
-              <div class="mem-placeholder-inner">🫶</div>
-            </div>
-            <p class="mem-caption">if i could relive any moment — it's this one 💛</p>
-          </div>
-
+      <!-- Add or replace images easily here -->
+      <div class="mem-slide">
+        <div class="mem-photo-wrap">
+          <img src="assets/mem1.jpg" alt="memory 1" class="mem-photo" 
+               onerror="this.style.display='none'; this.parentNode.classList.add('placeholder');">
+          <div class="mem-placeholder-inner">🌸</div>
         </div>
-
-        <div class="gallery-nav">
-          <button class="gal-btn" id="galPrev">‹</button>
-          <div class="gal-dots" id="galDots"></div>
-          <button class="gal-btn" id="galNext">›</button>
-        </div>
+        <p class="mem-caption">ingat tak ni first time kita ambil gamba berdua 💛</p>
       </div>
 
-      <button class="btn btn-done" data-done="memories">done looking 📸 ✓</button>
-    </section>
+      <div class="mem-slide">
+        <div class="mem-photo-wrap">
+          <img src="assets/mem2.jpg" alt="memory 2" class="mem-photo" 
+               onerror="this.style.display='none'; this.parentNode.classList.add('placeholder');">
+          <div class="mem-placeholder-inner">🤍</div>
+        </div>
+        <p class="mem-caption">i smile every time i think of this 😊</p>
+      </div>
+
+      <!-- Add more slides easily like this -->
+      <div class="mem-slide">
+        <div class="mem-photo-wrap">
+          <img src="assets/mem3.jpg" alt="memory 3" class="mem-photo" 
+               onerror="this.style.display='none'; this.parentNode.classList.add('placeholder');">
+          <div class="mem-placeholder-inner">✨</div>
+        </div>
+        <p class="mem-caption">this is my favourite kind of day 🌤️</p>
+      </div>
+
+      <!-- You can add more mem-slide blocks here if you want -->
+    </div>
+
+    <div class="gallery-nav">
+      <button class="gal-btn" id="galPrev">‹</button>
+      <div class="gal-dots" id="galDots"></div>
+      <button class="gal-btn" id="galNext">›</button>
+    </div>
+  </div>
+
+  <button class="btn btn-done" data-done="memories">done looking 📸 ✓</button>
+</section>
     <section class="screen" id="screen-messages">
       <div class="floaty floaty1">💬</div>
       <div class="floaty floaty3">💛</div>
