@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>a little apology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ambient backdrop, only visible behind the device card on wide screens -->
+<div class="backdrop" aria-hidden="true">
+  <div class="paw paw1">🐾</div>
+  <div class="paw paw2">🐾</div>
+  <div class="paw paw3">🐾</div>
+  <div class="paw paw4">🐾</div>
+  <div class="paw paw5">🐾</div>
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+</div>
+
+<main class="device">
+  <div class="screen-stack" id="screenStack">
+    <canvas class="confetti-canvas" id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <!-- SCREEN 1: lock -->
+    <section class="screen active" id="screen-lock" data-screen="lock">
+      <div class="status-fake">
+        <span>9:41</span>
+        <span class="dot">●</span>
+      </div>
+      <p class="eyebrow">a little something</p>
+      <h1 class="title">enter your password</h1>
+      <div class="hearts" id="heartsRow">
+        <span class="heart-slot">🤍</span>
+        <span class="heart-slot">🤍</span>
+        <span class="heart-slot">🤍</span>
+        <span class="heart-slot">🤍</span>
+      </div>
+      <div class="keypad" id="keypad">
+        <button class="key" data-key="1">1</button>
+        <button class="key" data-key="2">2</button>
+        <button class="key" data-key="3">3</button>
+        <button class="key" data-key="4">4</button>
+        <button class="key" data-key="5">5</button>
+        <button class="key" data-key="6">6</button>
+        <button class="key" data-key="7">7</button>
+        <button class="key" data-key="8">8</button>
+        <button class="key" data-key="9">9</button>
+        <button class="key key-ghost" data-key="back">⌫</button>
+        <button class="key" data-key="0">0</button>
+        <button class="key key-ghost" data-key="enter">↵</button>
+      </div>
+      <p class="hint">tap any 4 keys — it always opens for you 💛</p>
+      <div class="cat-deco cat-lock cat-bob">🐱</div>
+      <div class="burst-layer" id="burstLayer" aria-hidden="true"></div>
+    </section>
+
+    <!-- SCREEN 2: ready -->
+    <section class="screen" id="screen-ready" data-screen="ready">
+      <div class="cat-deco cat-ready cat-bob">🐈</div>
+      <p class="eyebrow">before we start</p>
+      <h1 class="title">i have something for you.</h1>
+      <p class="subtitle">are you ready?</p>
+      <div class="btn-stack">
+        <button class="btn btn-primary" data-goto="letter">yes, of course</button>
+        <button class="btn btn-ghost" data-goto="tryagain">maybe nooo</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2b: try again loop -->
+    <section class="screen" id="screen-tryagain" data-screen="tryagain">
+      <div class="cat-deco cat-grumpy cat-shake">🙀</div>
+      <h1 class="title">that's not an option.</h1>
+      <p class="subtitle">try that again, friend.</p>
+      <div class="btn-stack">
+        <button class="btn btn-primary" data-goto="ready">go back</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: apology letter -->
+    <section class="screen" id="screen-letter" data-screen="letter">
+      <div class="floaty floaty1">💕</div>
+      <div class="floaty floaty2">🤍</div>
+      <p class="eyebrow">an apology, written properly</p>
+      <h1 class="title title-script">a little apology,<br>a lot of love</h1>
+      <div class="letter-card">
+        <p class="letter-body" id="letterBody">
+          I'm sorry — really, genuinely sorry. For what I said, for what I didn't say,
+          and for the moments I let my pride speak louder than my care for you.
+          You deserved better, and I know it. I can't undo what happened, but I can
+          promise to listen more, react less, and choose you on purpose — every day,
+          not just on the easy ones. Thank you for your patience while I get this right.
+        </p>
+        <p class="letter-sign">— with love, always</p>
+      </div>
+      <button class="btn btn-primary" data-goto="gift">continue</button>
+    </section>
+
+    <!-- SCREEN 4: gift picker -->
+    <section class="screen" id="screen-gift" data-screen="gift">
+      <p class="eyebrow">one more thing</p>
+      <h1 class="title">pick your gift</h1>
+      <div class="gift-row">
+        <button class="gift-card" data-goto="memories" style="--i:0">
+          <span class="gift-emoji">🌸</span>
+          <span class="gift-num">01</span>
+          <span class="gift-shine"></span>
+        </button>
+        <button class="gift-card" data-goto="memories" style="--i:1">
+          <span class="gift-emoji">📷</span>
+          <span class="gift-num">02</span>
+          <span class="gift-shine"></span>
+        </button>
+        <button class="gift-card" data-goto="memories" style="--i:2">
+          <span class="gift-emoji">🧸</span>
+          <span class="gift-num">03</span>
+          <span class="gift-shine"></span>
+        </button>
+      </div>
+      <div class="paws-deco">🐾 🐾</div>
+    </section>
+
+    <!-- SCREEN 5: memories -->
+    <section class="screen" id="screen-memories" data-screen="memories">
+      <p class="eyebrow">if i could relive my favorite moments</p>
+      <h1 class="title">i'd choose every moment with you.</h1>
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <span class="browser-dot"></span>
+          <span class="browser-dot"></span>
+          <span class="browser-dot"></span>
+        </div>
+        <div class="browser-content">
+          <div class="cloud cloud1">☁️</div>
+          <div class="cloud cloud2">☁️</div>
+          <div class="hill hill-back"></div>
+          <div class="hill hill-front"></div>
+          <p class="memories-caption">our story, still being written</p>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-restart" data-goto="lock">play again</button>
+    </section>
+
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
