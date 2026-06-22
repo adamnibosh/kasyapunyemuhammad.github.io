@@ -575,3 +575,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (prefers-reduced-motion: reduce) {
   .finale-cat, .btn-finale, .finale-stars { animation: none !important; }
 }
+
+/* ============================================
+   DONE BUTTON (marks gift as complete)
+   ============================================ */
+.btn-done {
+  background: linear-gradient(135deg, var(--sky), var(--pink));
+  color: var(--brown);
+  font-weight: 700;
+  box-shadow: 0 8px 22px rgba(169,214,232,.4);
+  width: 100%; max-width: 280px;
+  margin-top: auto;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.btn-done:hover {
+  box-shadow: 0 12px 28px rgba(169,214,232,.55);
+}

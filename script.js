@@ -43,38 +43,44 @@ const PASSCODE = '1406';
 const GIFT_SCREENS = new Set(['letter', 'memories', 'messages']);
 const visited = new Set();
 
+function markVisited(name) {
+  visited.add(name);
+  const card = document.getElementById('gcard-' + name);
+  if (card) card.classList.add('visited');
+  if (visited.size === 3) {
+    setTimeout(() => {
+      document.getElementById('finaleReveal')?.classList.add('show');
+    }, 500);
+  }
+}
+
 function goTo(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const t = document.getElementById('screen-' + name);
   if (t) t.classList.add('active');
-  if (name === 'lock')    resetKeypad();
+  if (name === 'lock')     resetKeypad();
   if (name === 'memories') initGallery();
   if (name === 'messages') initMessages();
   if (name === 'finale')   startHeartRain();
+  // burst confetti when entering a gift screen
+  if (GIFT_SCREENS.has(name)) burstConfetti();
 }
 
-// wire up all data-goto buttons (except lock — handled by keypad)
+// ── data-goto buttons (navigation only, no visit tracking) ──
 document.querySelectorAll('[data-goto]').forEach(el => {
   el.addEventListener('click', e => {
     spawnRipple(el, e);
-    const dest = el.dataset.goto;
+    setTimeout(() => goTo(el.dataset.goto), 140);
+  });
+});
 
-    // track gift visits
-    if (GIFT_SCREENS.has(dest)) {
-      burstConfetti();
-      visited.add(dest);
-      // mark card as visited
-      const card = document.getElementById('gcard-' + dest);
-      if (card) card.classList.add('visited');
-      // reveal finale button once all 3 seen
-      if (visited.size === 3) {
-        setTimeout(() => {
-          document.getElementById('finaleReveal')?.classList.add('show');
-        }, 600);
-      }
-    }
-
-    setTimeout(() => goTo(dest), 140);
+// ── data-done buttons (mark gift complete → back to picker) ──
+document.querySelectorAll('[data-done]').forEach(el => {
+  el.addEventListener('click', e => {
+    spawnRipple(el, e);
+    const gift = el.dataset.done;
+    markVisited(gift);
+    setTimeout(() => goTo('gift'), 140);
   });
 });
 
